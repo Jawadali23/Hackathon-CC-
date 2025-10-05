@@ -7,7 +7,6 @@ A modern, responsive Flask web application with a clean design and essential fea
 - 🚀 **Fast & Lightweight**: Built with Flask for optimal performance
 - 📱 **Responsive Design**: Bootstrap 5 for mobile-first design
 - 🎨 **Modern UI**: Clean and professional interface
-- 📝 **Contact Form**: Working contact form with validation
 - 🔧 **Easy Configuration**: Environment-based configuration
 - 📊 **API Endpoints**: RESTful API for status checks
 - 🛡️ **Error Handling**: Custom 404 and 500 error pages
@@ -30,12 +29,13 @@ Flask/
 │   │   └── js/
 │   │       └── main.js      # JavaScript functionality
 │   └── templates/
-│       ├── base.html        # Base template
-│       ├── index.html       # Home page
-│       ├── about.html       # About page
-│       ├── contact.html     # Contact page
-│       ├── 404.html         # 404 error page
-│       └── 500.html         # 500 error page
+│       ├── base.html           
+│       ├── crop_weather.html      
+│       ├── crop_weather_results.html      
+│       ├── harvest_calendar.html
+|       ├── region_selection.html
+│       ├── 404.html         
+│       └── 500.html       
 └── instance/                # Instance-specific files
 ```
 
@@ -106,8 +106,6 @@ The application runs in debug mode by default, which means:
 ### Routes
 
 - `/` - Home page with application overview
-- `/about` - About page with feature details
-- `/contact` - Contact form
 - `/api/status` - API endpoint for status checks
 
 ### Customization
@@ -186,7 +184,6 @@ This project is open source and available under the [MIT License](LICENSE).
 For questions or issues:
 - Check the documentation
 - Create an issue in the repository
-- Contact the development team
 
 ## Changelog
 
@@ -194,7 +191,7 @@ For questions or issues:
 - Initial release
 - Basic Flask application structure
 - Responsive design with Bootstrap 5
-- Contact form functionality
 - Error handling
 - API endpoints
+
 - Configuration management
