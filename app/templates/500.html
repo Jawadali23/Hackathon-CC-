@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <div class="error-template">
+        <h1 class="display-1">500</h1>
+        <h2>Internal Server Error</h2>
+        <div class="error-details mb-4">
+            Something went wrong on our end. We're working to fix it!
+        </div>
+        <div class="error-actions">
+            <a href="{{ url_for('index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-home"></i> Take Me Home
+            </a>
+            <a href="javascript:location.reload()" class="btn btn-outline-secondary btn-lg">
+                <i class="fas fa-redo"></i> Try Again
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-template {
+    padding: 40px 15px;
+    text-align: center;
+}
+.error-template h1 {
+    font-size: 200px;
+    font-weight: bold;
+    color: #dc3545;
+}
+.error-template h2 {
+    font-size: 36px;
+    color: #6c757d;
+}
+.error-details {
+    font-size: 18px;
+    color: #6c757d;
+}
+</style>
+{% endblock %}

@@ -1,0 +1,248 @@
+{% extends "base.html" %}
+
+{% block title %}{{ crop_name }} - Crop Calendar & Weather{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-lg-10 mx-auto">
+            <!-- Breadcrumb -->
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('crop_weather_form') }}">
+                            <i class="fas fa-cloud-sun me-1"></i>Crop Weather
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ crop_name }}</li>
+                </ol>
+            </nav>
+
+            <!-- Header -->
+            <div class="text-center mb-4">
+                <h1 class="text-success">
+                    <i class="fas fa-seedling me-2"></i>{{ crop_name }}
+                </h1>
+                <h4 class="text-muted">Crop Calendar & Weather Report</h4>
+                <p class="lead">{{ country_name }}</p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="row">
+                <!-- Crop Calendar Information -->
+                <div class="col-lg-8">
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                Crop Calendar Information
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <h6 class="text-success">
+                                        <i class="fas fa-seedling me-2"></i>Sowing Period
+                                    </h6>
+                                    <p class="fs-5 fw-bold text-primary">{{ sowing_period }}</p>
+                                    {% if suitability.activities.sowing.current_status %}
+                                        <div class="alert alert-{{ 'success' if suitability.activities.sowing.current_status == 'suitable' else 'warning' if suitability.activities.sowing.current_status == 'approaching' else 'info' }} py-2">
+                                            <small>
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Current Status: 
+                                                {% if suitability.activities.sowing.current_status == 'suitable' %}
+                                                    <strong>Suitable for sowing now</strong>
+                                                {% elif suitability.activities.sowing.current_status == 'approaching' %}
+                                                    <strong>Sowing season approaching</strong>
+                                                {% else %}
+                                                    <strong>{{ suitability.activities.sowing.current_status|title }}</strong>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <h6 class="text-warning">
+                                        <i class="fas fa-cut me-2"></i>Harvest Period
+                                    </h6>
+                                    <p class="fs-5 fw-bold text-primary">{{ harvest_period }}</p>
+                                    {% if suitability.activities.harvest.current_status %}
+                                        <div class="alert alert-{{ 'success' if suitability.activities.harvest.current_status == 'suitable' else 'warning' if suitability.activities.harvest.current_status == 'approaching' else 'info' }} py-2">
+                                            <small>
+                                                <i class="fas fa-info-circle me-1"></i>
+                                                Current Status: 
+                                                {% if suitability.activities.harvest.current_status == 'suitable' %}
+                                                    <strong>Suitable for harvesting now</strong>
+                                                {% elif suitability.activities.harvest.current_status == 'approaching' %}
+                                                    <strong>Harvest season approaching</strong>
+                                                {% else %}
+                                                    <strong>{{ suitability.activities.harvest.current_status|title }}</strong>
+                                                {% endif %}
+                                            </small>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            {% if suitability.general_notes %}
+                                <div class="mt-3">
+                                    <h6 class="text-info">
+                                        <i class="fas fa-lightbulb me-2"></i>General Notes
+                                    </h6>
+                                    <div class="alert alert-light">
+                                        <p class="mb-0">{{ suitability.general_notes }}</p>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weather Information -->
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">
+                                <i class="fas fa-cloud-sun me-2"></i>
+                                Current Weather
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            {% if weather and weather.success %}
+                                <div class="text-center mb-3">
+                                    <h6 class="text-muted">
+                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                        {{ province_name }}
+                                    </h6>
+                                </div>
+                                
+                                <div class="weather-info">
+                                    <div class="row text-center mb-3">
+                                        <div class="col-6">
+                                            <div class="weather-item">
+                                                <i class="fas fa-thermometer-half fa-2x text-danger mb-2"></i>
+                                                <h5>{{ weather.temperature_str }}</h5>
+                                                <small class="text-muted">Temperature</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="weather-item">
+                                                <i class="fas fa-tint fa-2x text-info mb-2"></i>
+                                                <h5>{{ weather.humidity_str }}</h5>
+                                                <small class="text-muted">Humidity</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row text-center mb-3">
+                                        <div class="col-6">
+                                            <div class="weather-item">
+                                                <i class="fas fa-cloud-rain fa-2x text-primary mb-2"></i>
+                                                <h5>{{ weather.rainfall_str }}</h5>
+                                                <small class="text-muted">Rainfall</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="weather-item">
+                                                <i class="fas fa-eye fa-2x text-secondary mb-2"></i>
+                                                <h5>{{ weather.description }}</h5>
+                                                <small class="text-muted">Conditions</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% if weather.feels_like != weather.temperature %}
+                                        <div class="text-center">
+                                            <small class="text-muted">
+                                                Feels like {{ weather.feels_like }}°C
+                                            </small>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="text-center py-4">
+                                    <i class="fas fa-cloud-meatball fa-3x text-muted mb-3"></i>
+                                    <p class="text-muted">Weather data unavailable</p>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Information -->
+            {% if suitability.seasonal_tips or suitability.risk_factors %}
+                <div class="row mt-4">
+                    {% if suitability.seasonal_tips %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-info text-white">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-lightbulb me-2"></i>
+                                        Seasonal Tips
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        {% for tip in suitability.seasonal_tips %}
+                                            <li class="mb-2">
+                                                <i class="fas fa-check-circle text-success me-2"></i>
+                                                {{ tip }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if suitability.risk_factors %}
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header bg-warning text-dark">
+                                    <h6 class="mb-0">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        Risk Factors
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-unstyled">
+                                        {% for risk in suitability.risk_factors %}
+                                            <li class="mb-2">
+                                                <i class="fas fa-exclamation-circle text-warning me-2"></i>
+                                                {{ risk }}
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- Navigation -->
+            <div class="text-center mt-4">
+                <a href="{{ url_for('crop_weather_form') }}" class="btn btn-outline-success me-2">
+                    <i class="fas fa-arrow-left me-1"></i>Back to Search
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.weather-item {
+    padding: 10px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 10px;
+}
+
+.weather-info h5 {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+</style>
+{% endblock %}

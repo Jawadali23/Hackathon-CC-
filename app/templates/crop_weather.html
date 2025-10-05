@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block title %}Crop Calendar & Weather{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-seedling me-2"></i>
+                        Harvest Calendar with Weather
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <p class="text-muted mb-4">
+                      <strong>View the complete harvest calendar with integrated weather information and regional recommendations.</strong>
+                    </p>
+                    
+                    <form action="{{ url_for('crop_weather_results') }}" method="POST" id="cropWeatherForm">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="region" class="form-label">
+                                    <i class="fas fa-map me-1"></i>
+                                    Select Region
+                                </label>
+                                <select class="form-select" id="region" name="region" required>
+                                    <option value="">Choose a region...</option>
+                                    {% for region in regions %}
+                                        <option value="{{ region }}">{{ region }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="city" class="form-label">
+                                    <i class="fas fa-map-marker-alt me-1"></i>
+                                    Select City/Subregion
+                                </label>
+                                <select class="form-select" id="city" name="city" required>
+                                    <option value="">First select a region...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-4 mb-3">
+                                <label for="crop" class="form-label">
+                                    <i class="fas fa-wheat-awn me-1"></i>
+                                    Select Crop
+                                </label>
+                                <select class="form-select" id="crop" name="crop" required>
+                                    <option value="">First select a city...</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                View Calendar & Weather
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Info Cards -->
+            <div class="row mt-4">
+                <div class="col-md-4">
+                    <div class="card border-info">
+                        <div class="card-body text-center">
+                            <i class="fas fa-calendar-alt fa-2x text-info mb-2"></i>
+                            <h6>Current Month</h6>
+                            <p class="text-muted">{{ current_month_name }}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-warning">
+                        <div class="card-body text-center">
+                            <i class="fas fa-cloud-sun fa-2x text-warning mb-2"></i>
+                            <h6>Weather Integration</h6>
+                            <p class="text-muted">Real-time data</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card border-success">
+                        <div class="card-body text-center">
+                            <i class="fas fa-map-marker-alt fa-2x text-success mb-2"></i>
+                            <h6>Regional Data</h6>
+                            <p class="text-muted">Location-specific</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+// Region to city/subregion mapping from backend
+let regionCityMap = {};
+regionCityMap = JSON.parse('{{ region_city_map|default({})|tojson|safe }}');
+if (Object.keys(regionCityMap).length === 0) {
+    console.error('WARNING: region_city_map not provided from backend');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('Region-City Map loaded:', regionCityMap);
+    
+    // Verify the mapping is loaded correctly
+    if (!regionCityMap || typeof regionCityMap !== 'object') {
+        console.error('ERROR: regionCityMap is not loaded properly:', regionCityMap);
+        // Try to fetch the mapping via API as fallback
+        fetch('/api/region-city-mapping')
+            .then(response => response.json())
+            .then(data => {
+                if (data.region_city_map) {
+                    Object.assign(regionCityMap, data.region_city_map);
+                    console.log('Fallback: Loaded region mapping via API');
+                }
+            })
+            .catch(error => console.error('Failed to load region mapping:', error));
+        return;
+    }
+    
+    console.log('Available regions:', Object.keys(regionCityMap));
+});
+
+// JavaScript to populate cities/subregions based on selected region
+document.getElementById('region').addEventListener('change', function() {
+    const region = this.value;
+    const citySelect = document.getElementById('city');
+    const cropSelect = document.getElementById('crop');
+    
+    // Clear existing options
+    citySelect.innerHTML = '<option value="">Choose a city/subregion...</option>';
+    cropSelect.innerHTML = '<option value="">First select a city...</option>';
+    
+    if (region && regionCityMap[region]) {
+        // Populate cities for selected region
+        regionCityMap[region].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    } else {
+        citySelect.innerHTML = '<option value="">First select a region...</option>';
+    }
+});
+
+// JavaScript to populate crops based on selected city/subregion
+document.getElementById('city').addEventListener('change', function() {
+    const city = this.value;
+    const cropSelect = document.getElementById('crop');
+    
+    // Clear existing options
+    cropSelect.innerHTML = '<option value="">Loading crops...</option>';
+    
+    if (city) {
+        // Fetch crops for selected city/region
+        fetch(`/api/crops-by-region?region=${encodeURIComponent(city)}`)
+            .then(response => response.json())
+            .then(data => {
+                cropSelect.innerHTML = '<option value="">Choose a crop...</option>';
+                if (data.crops && data.crops.length > 0) {
+                    data.crops.forEach(crop => {
+                        const option = document.createElement('option');
+                        option.value = crop;
+                        option.textContent = crop;
+                        cropSelect.appendChild(option);
+                    });
+                } else {
+                    cropSelect.innerHTML = '<option value="">No crops available for this region</option>';
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching crops:', error);
+                cropSelect.innerHTML = '<option value="">Error loading crops</option>';
+            });
+    } else {
+        cropSelect.innerHTML = '<option value="">First select a city...</option>';
+    }
+});
+</script>
+{% endblock %}

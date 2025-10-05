@@ -1,0 +1,103 @@
+Country Name,Crop,Region,Early Sowing,Late Sowing,Early Harvest,Late Harvest,Sowing Rate,Growing Period
+Pakistan,"Wheat, bread",Upland Balochistan,15/09,30/11,30/04,31/05,110 kg/ha,160 - 180 days
+Pakistan,"Wheat, bread",Plains of Balochistan,15/10,30/11,30/04,31/05,120 kg/ha,150 - 170 days
+Pakistan,"Wheat, bread",Upper Sindh,01/11,20/12,15/04,30/04,120 kg/ha,160 days
+Pakistan,"Wheat, bread",Lower Sindh,01/11,20/12,15/04,30/04,120 kg/ha,160 days
+Pakistan,"Wheat, bread",Southern irrigated Plain,01/11,15/12,15/03,30/04,120 kg/ha,140 - 160 days
+Pakistan,"Wheat, bread",Central Punjab,01/11,15/12,15/03,30/04,120 kg/ha,140 - 160 days
+Pakistan,"Wheat, bread",Pothowar region,01/11,15/12,01/05,31/05,120 kg/ha,160 - 180 days
+Pakistan,"Wheat, bread",Pothowar region,20/10,15/11,01/05,15/05,100 kg/ha,180 days
+Pakistan,"Wheat, bread",NWFP,05/11,15/12,15/05,01/06,120 kg/ha,130 - 150 days
+Pakistan,"Wheat, bread",NWFP,20/10,30/11,15/05,01/06,110 kg/ha,160 - 180 days
+Pakistan,Rice,Central Punjab,01/06,30/06,25/10,07/11,12 kg/ha,100 - 120 days
+Pakistan,Rice,Upper Sindh,15/05,30/06,07/10,30/10,17 kg/ha,100 - 120 days
+Pakistan,Rice,Lower Sindh,25/04,10/06,07/10,30/10,17 kg/ha,100 - 120 days
+Pakistan,Rice,Irrigated areas of NWFP (Plains of NWFP),01/05,31/05,30/09,31/10,17 kg/ha,120 days
+Pakistan,"Corn, sweet",Central Punjab,31/01,29/02,15/09,15/10,35 - 40 kg/ha,150 - 170 days
+Pakistan,"Corn, sweet",Central Punjab,01/07,31/07,30/09,15/10,35 - 40 kg/ha,60 - 90 days
+Pakistan,"Corn, sweet",Sindh,15/05,15/06,01/09,30/09,35 - 40 kg/ha,90 - 120 days
+Pakistan,"Corn, sweet",Sindh,15/07,01/08,01/09,30/09,35 - 40 kg/ha,60 days
+Pakistan,"Corn, sweet",Irrigated areas of NWFP (Plains of NWFP),15/05,15/06,01/09,10/10,35 - 40 kg/ha,75- 90 days
+Pakistan,"Corn, sweet",Plains of Balochistan,15/05,30/06,01/09,30/09,35 - 40 kg/ha,100– 120 days
+Pakistan,"Corn, sweet",Azad Jammu and kashmir,15/05,15/06,01/09,30/09,35 - 40 kg/ha,100– 120 days
+Pakistan,Sorghum,Plain and irrigated areas of Pakistan,21/06,21/07,21/09,15/10,20 kg/ha,90– 110 days
+Pakistan,Sorghum,Rainfed areas of NWFP,01/07,01/08,21/09,15/10,20 kg/ha,90– 110 days
+Pakistan,Sorghum,Southern Punjab,01/07,01/08,21/09,15/10,20 kg/ha,90– 110 days
+Pakistan,Bean,Pothowar region,12/07,25/08,15/09,01/10,12 - 14 kg/ha,60 - 90 days
+Pakistan,Bean,Central Punjab,14/07,31/08,15/09,01/10,12 - 14 kg/ha,60 - 90 days
+Pakistan,Bean,Southern Punjab,01/07,22/07,15/09,01/10,12 - 14 kg/ha,60 - 90 days
+Pakistan,Bean,Upper Sindh,25/06,12/08,15/09,01/10,12 - 14 kg/ha,60 - 90 days
+Pakistan,Oats,Lower Sindh,15/10,30/11,25/12,20/02,85 - 90 kg/ha,100 - 120 days
+Pakistan,Oats,NWFP,15/10,30/11,16/02,30/03,85 - 90 kg/ha,100 - 120 days
+Pakistan,Oats,Central Punjab,15/10,30/11,21/01,20/02,85 - 90 kg/ha,100 - 120 days
+Pakistan,Oats,Plains of Balochistan,15/10,30/11,20/02,30/03,85 - 90 kg/ha,100 - 120 days
+Pakistan,Barley,Rainfed Baluchistan,01/11,31/12,01/05,30/06,40 kg/ha,150 - 180 days
+Pakistan,Barley,Upper Sindh,01/11,31/12,01/05,30/06,40 kg/ha,150 - 180 days
+Pakistan,Barley,Lower Sindh,01/11,31/12,01/05,30/06,40 kg/ha,150 - 180 days
+Pakistan,Potato,Central Punjab,30/09,15/10,01/12,31/01,2500 - 3000 kg/ha,90 - 120 days
+Pakistan,Potato,Southern Punjab,01/01,15/02,01/04,31/05,2500 - 3000 kg/ha,90 - 120 days
+Pakistan,Potato,Plains of Balochistan,01/03,31/05,01/09,31/10,1000 - 1500 kg/ha,120 days
+Pakistan,Potato,Upper Sindh,15/09,31/10,01/12,31/01,2500 - 3000 kg/ha,90 - 120 days
+Pakistan,Potato,Lower Sindh,15/09,31/10,01/12,31/01,2500 - 3000 kg/ha,90 - 120 days
+Pakistan,Potato,Irrigated areas of NWFP (Plains of NWFP),15/09,15/10,01/12,31/01,2500 - 3000 kg/ha,90 - 120 days
+Pakistan,Lentil,Pothowar region,15/10,15/11,01/04,30/04,45 kg/ha,120 - 150 days
+Pakistan,Lentil,Upland Balochistan,01/10,01/11,01/04,30/04,45 kg/ha,120 - 150 days
+Pakistan,Lentil,Upland Balochistan,15/02,31/03,01/04,30/04,45 kg/ha,120 - 150 days
+Pakistan,Lentil,Rainfed areas of NWFP,15/10,15/11,01/04,30/04,45 kg/ha,120 - 150 days
+Pakistan,Chick-pea,Pothowar region,15/10,01/11,15/04,01/06,75 kg/ha,120 - 150 days
+Pakistan,Mung bean,Central Punjab,15/06,22/07,01/09,15/10,12–15 kg/ha,90 - 120 days
+Pakistan,Mung bean,Northern Punjab,15/06,31/07,01/09,15/10,12–15 kg/ha,90 - 120 days
+Pakistan,Mung bean,Pothowar region,23/06,31/07,15/09,15/10,12–15 kg/ha,90 - 120 days
+Pakistan,Cowpea,Central Punjab,29/02,15/03,01/05,30/06,32 kg/ha,60 - 90 days
+Pakistan,Cowpea,Northern Punjab,29/02,15/03,01/05,30/06,32 kg/ha,60 - 90 days
+Pakistan,Mustard,Upland Balochistan,15/10,30/11,01/04,31/05,5 kg/ha,150 days
+Pakistan,Mustard,Pothowar region,01/10,01/11,01/04,31/05,5 kg/ha,150 days
+Pakistan,Mustard,Southern Punjab,15/10,30/11,01/04,31/05,5 kg/ha,120 - 140 days
+Pakistan,Mustard,Irrigated areas of NWFP (Plains of NWFP),15/09,31/10,01/03,30/04,5 kg/ha,120 - 140 days
+Pakistan,Mustard,Upper Sindh,15/10,15/11,01/03,30/04,5 kg/ha,120 days
+Pakistan,Mustard,Lower Sindh,15/10,15/11,01/03,30/04,5 kg/ha,120 days
+Pakistan,Sesame,Pothowar region,25/06,20/07,15/10,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sesame,Upper Sindh,15/06,15/07,15/10,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sesame,Lower Sindh,15/06,15/07,15/10,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sesame,Central Punjab,01/07,31/07,01/11,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sesame,Irrigated areas of NWFP (Plains of NWFP),15/07,31/07,15/10,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sesame,Plains of Balochistan,01/07,31/07,01/11,15/11,5 kg/ha,100 - 120 days
+Pakistan,Sugarcane,Central Punjab,15/02,15/03,01/11,31/01,3.5 - 4 tons/acre,10 - 12 months
+Pakistan,Sugarcane,Northern Punjab,15/09,15/10,01/02,31/03,3.5 - 4 tons/acre,6 months
+Pakistan,Sugarcane,Irrigated Sindh,10/02,15/03,01/11,31/01,3.5 - 4 tons/acre,10 - 12 months
+Pakistan,Sugarcane,Irrigated Sindh,01/09,15/10,01/02,30/04,3.5 - 4 tons/acre,6 - 8 months
+Pakistan,Sugarcane,Irrigated areas of NWFP (Plains of NWFP),15/02,20/03,01/11,31/12,3.5 - 4 tons/acre,10 - 12 months
+Pakistan,Sugarcane,Irrigated areas of NWFP (Plains of NWFP),15/09,30/10,01/02,31/03,3.5 - 4 tons/acre,6 months
+Pakistan,Safflower,Central Punjab,20/10,30/11,20/03,05/05,20 - 25 kg/ha,165 -180 days
+Pakistan,Safflower,Northern Punjab,20/10,30/11,30/03,20/04,20 - 25 kg/ha,150– 165 days
+Pakistan,Safflower,Pothowar region,15/10,15/11,10/04,05/07,15 - 20 kg/ha,170– 190 days
+Pakistan,Sunflower,Southern Punjab,15/12,15/01,30/04,30/06,4 - 5 kg/ha,150 - 180 days
+Pakistan,Sunflower,Southern Punjab,01/08,29/08,30/04,20/05,4 - 5 kg/ha,90 - 120 days
+Pakistan,Sunflower,Plains of Balochistan,10/12,10/02,20/05,30/06,4 - 5 kg/ha,90 - 120 days
+Pakistan,Sunflower,Rainfed areas of NWFP,15/01,15/02,01/05,02/06,4 - 5 kg/ha,90 - 120 days
+Pakistan,Castor bean,Central Punjab,01/03,30/04,01/06,31/07,12 kg/ha,120 - 150 days
+Pakistan,Castor bean,Northern Punjab,01/07,31/08,01/11,31/12,12 kg/ha,120 - 150 days
+Pakistan,Garlic,Pothowar region,01/09,15/10,01/05,30/06,800 - 1000 kg/ha,210 days
+Pakistan,Tomato,Plain and irrigated areas of Pakistan,01/03,01/04,01/05,30/06,400 - 450 kg/ha,100– 120 days
+Pakistan,Tomato,Plain and irrigated areas of Pakistan,01/11,31/12,15/02,15/03,400 - 450 kg/ha,100– 120 days
+Pakistan,Eggplant,Plain and irrigated areas of Pakistan,01/11,01/12,01/05,30/06,600 - 620 kg/ha,120 - 150 days
+Pakistan,Cucumber,Plain and irrigated areas of Pakistan,01/03,01/04,01/05,31/08,4 - 5 kg/ha,60 - 120 days
+Pakistan,Okra,Plain and irrigated areas of Pakistan,01/03,01/04,01/05,31/08,20 - 25 kg/ha,90 - 150 days
+Pakistan,Bitter gourd,Plain and irrigated areas of Pakistan,01/03,01/04,01/05,31/08,8 - 10 kg/ha,60 - 120 days
+Pakistan,Watermelon,Plain and irrigated areas of Pakistan,01/03,01/04,01/05,31/08,3 - 4 kg/ha,60 - 120 days
+Pakistan,Onion,Plain and irrigated areas of Pakistan,01/10,30/11,01/05,30/06,10 kg/ha,180 - 210 days
+Pakistan,Turnip,Plain and irrigated areas of Pakistan,01/08,30/11,01/10,31/03,3 - 4 kg/ha,60 - 120 days
+Pakistan,Radish,Plain and irrigated areas of Pakistan,01/07,31/01,01/08,31/10,8 - 10 kg/ha,40– 60 days
+Pakistan,Carrot,Plain and irrigated areas of Pakistan,15/09,31/10,01/12,31/03,25 kg/ha,90 - 150 days
+Pakistan,"Cabbage, common",Plain and irrigated areas of Pakistan,01/08,30/11,01/12,30/04,500 g/acre,120 - 150 days
+Pakistan,Alfalfa,Plain and irrigated areas of Pakistan,01/10,30/11,25/12,20/06,10 - 14 kg/ha,60- 70 days
+Pakistan,Cotton,Southern Punjab,30/05,15/06,15/09,31/10,18 - 20 kg/ha,120 - 150 days
+Pakistan,Cotton,Upper Sindh,30/05,15/06,15/09,31/10,18 - 20 kg/ha,120 - 150 days
+Pakistan,Cotton,Lower Sindh,30/05,15/06,15/09,31/10,18 - 20 kg/ha,120 - 150 days
+Pakistan,Guar,Southern Punjab,01/03,31/07,01/06,30/09,50 - 55 kg/ha,60 - 90 days
+Pakistan,Berseem,Central Punjab,01/09,30/11,01/12,31/05,20 - 25 kg/ha,90 - 150 days
+Pakistan,Berseem,Northern Punjab,01/09,30/11,01/12,31/05,20 - 25 kg/ha,90 - 150 days
+Pakistan,Berseem,Southern Punjab,01/09,30/11,01/12,31/05,20 - 25 kg/ha,90 - 150 days
+Pakistan,S.S. Hybrid (Sadabahar),Central Punjab,01/02,31/03,01/05,30/11,25 kg/ha,90 - 180 days
+Pakistan,S.S. Hybrid (Sadabahar),Northern Punjab,01/02,31/03,01/05,30/11,25 kg/ha,90 - 180 days
+Pakistan,S.S. Hybrid (Sadabahar),Southern Punjab,01/02,31/03,01/05,30/11,25 kg/ha,90 - 180 days

@@ -1,0 +1,656 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                {% if request.args.get('source') == 'crop_weather' %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('crop_weather_form') }}">
+                            <i class="fas fa-cloud-sun me-1"></i>Crop Weather
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ crop_name }} - Harvest Calendar</li>
+                {% else %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('crop_weather_form') }}">
+                            <i class="fas fa-leaf me-1"></i>Crops
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('region_selection', crop_name=crop_name) }}">{{ crop_name }}</a>
+                    </li>
+                    <li class="breadcrumb-item active">
+                        {% if region %}{{ region }}{% else %}All Regions{% endif %}
+                    </li>
+                {% endif %}
+            </ol>
+        </nav>
+
+        <!-- Header -->
+        <div class="text-center mb-4">
+            {% if request.args.get('source') == 'crop_weather' %}
+                <h1>
+                    <i class="fas fa-calendar-alt text-success me-2"></i>
+                    <i class="fas fa-cloud-sun text-warning me-2"></i>
+                    Harvest Calendar with Weather
+                </h1>
+                <h3 class="text-muted">{{ crop_name }}</h3>
+                {% if region %}
+                    <p class="lead">
+                        <i class="fas fa-map-marker-alt text-info me-1"></i>{{ region }}
+                    </p>
+                {% endif %}
+                <div class="alert alert-info mb-3">
+                    <i class="fas fa-info-circle me-2"></i>
+                    <strong>Integrated View:</strong> Complete harvest calendar with real-time weather data for optimal farming decisions.
+                </div>
+            {% else %}
+                <h1>
+                    <i class="fas fa-calendar-alt text-success me-2"></i>
+                    Harvest Calendar
+                </h1>
+                <h3 class="text-muted">{{ crop_name }}</h3>
+                {% if region %}
+                    <p class="lead">
+                        <i class="fas fa-map-marker-alt text-info me-1"></i>{{ region }}
+                    </p>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        <!-- Current Season Alert -->
+        {% if suggestions %}
+            {% set in_season = suggestions|selectattr('is_planting_season')|list %}
+            {% if in_season %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fas fa-seedling me-2"></i>
+                    <strong>Great timing!</strong> {{ month_name }} is a good planting season for {{ crop_name }} in some regions.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endif %}
+        {% endif %}
+
+        <!-- Weather Information Card -->
+        {% if weather and weather.success %}
+            <div class="row mb-4">
+                <div class="col-lg-6">
+                    <div class="weather-card compact">
+                        <div class="weather-header">
+                            <div class="weather-title">
+                                <i class="fas fa-cloud-sun weather-icon"></i>
+                                <div>
+                                    <h5 class="mb-0">Current Weather</h5>
+                                    <small class="weather-location">{{ weather.location_display or weather.location }}</small>
+                                </div>
+                            </div>
+                            <div class="weather-status">
+                                <span class="weather-badge">Live</span>
+                            </div>
+                        </div>
+                        
+                        <div class="weather-content">
+                            <div class="weather-main">
+                                <div class="main-temp">
+                                    <span class="temp-value">{{ weather.temperature_str.split('°')[0] }}</span>
+                                    <span class="temp-unit">°C</span>
+                                </div>
+                                <div class="main-desc">
+                                    <div class="weather-desc">{{ weather.description }}</div>
+                                    {% if weather.feels_like != weather.temperature %}
+                                        <div class="feels-like">Feels like {{ weather.feels_like }}°C</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="weather-metrics-grid">
+                        <div class="metric-item">
+                            <div class="metric-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="metric-data">
+                                <div class="metric-value">{{ weather.humidity_str.split('%')[0] }}%</div>
+                                <div class="metric-label">Humidity</div>
+                            </div>
+                        </div>
+                        
+                        <div class="metric-item">
+                            <div class="metric-icon">
+                                <i class="fas fa-cloud-rain"></i>
+                            </div>
+                            <div class="metric-data">
+                                <div class="metric-value">{{ weather.rainfall_str }}</div>
+                                <div class="metric-label">Rainfall</div>
+                            </div>
+                        </div>
+                        
+                        {% if weather.wind_speed %}
+                        <div class="metric-item">
+                            <div class="metric-icon">
+                                <i class="fas fa-wind"></i>
+                            </div>
+                            <div class="metric-data">
+                                <div class="metric-value">{{ weather.wind_speed }} m/s</div>
+                                <div class="metric-label">Wind Speed</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if weather.pressure %}
+                        <div class="metric-item">
+                            <div class="metric-icon">
+                                <i class="fas fa-gauge"></i>
+                            </div>
+                            <div class="metric-data">
+                                <div class="metric-value">{{ weather.pressure }} hPa</div>
+                                <div class="metric-label">Pressure</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% elif weather and not weather.success %}
+            <div class="alert alert-warning" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                <strong>Weather data unavailable:</strong> {{ weather.error or 'Unable to fetch current weather conditions' }}
+            </div>
+        {% endif %}
+
+        <!-- Calendar Data -->
+        {% if suggestions %}
+            <div class="row">
+                {% for suggestion in suggestions %}
+                    <div class="col-lg-6 mb-4">
+                        <div class="card h-100 {% if suggestion.is_planting_season %}border-success{% endif %}">
+                            {% if suggestion.is_planting_season %}
+                                <div class="card-header bg-success text-white">
+                                    <i class="fas fa-star me-2"></i>Planting Season Now!
+                                </div>
+                            {% endif %}
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <i class="fas fa-map-marker-alt text-info me-2"></i>
+                                    {{ suggestion.region }}
+                                </h5>
+                                
+                                <!-- Planting Information -->
+                                <div class="mb-3">
+                                    <h6 class="text-success">
+                                        <i class="fas fa-seedling me-2"></i>Planting Period
+                                    </h6>
+                                    <p class="mb-1">
+                                        <strong>{{ suggestion.sowing_period }}</strong>
+                                    </p>
+                                    {% if suggestion.sowing_rate %}
+                                        <small class="text-muted">
+                                            <i class="fas fa-weight me-1"></i>Sowing Rate: {{ suggestion.sowing_rate }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Harvest Information -->
+                                <div class="mb-3">
+                                    <h6 class="text-warning">
+                                        <i class="fas fa-tractor me-2"></i>Harvest Period
+                                    </h6>
+                                    <p class="mb-1">
+                                        <strong>{{ suggestion.harvest_period }}</strong>
+                                    </p>
+                                    {% if suggestion.growing_period %}
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock me-1"></i>Growing Period: {{ suggestion.growing_period }}
+                                        </small>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Season Indicator -->
+                                {% if suggestion.is_planting_season %}
+                                    <div class="alert alert-success py-2 mb-0">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <small><strong>Optimal planting time for {{ month_name }}!</strong></small>
+                                    </div>
+                                {% else %}
+                                    <div class="alert alert-light py-2 mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        <small>Plan ahead for the next planting season</small>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Summary Card -->
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Summary & Tips
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-seedling text-success me-2"></i>Best Planting Time</h6>
+                            <p class="text-muted">
+                                {% set all_sowing = suggestions|map(attribute='sowing_period')|unique|list %}
+                                {% if all_sowing|length == 1 %}
+                                    {{ all_sowing[0] }}
+                                {% else %}
+                                    Varies by region
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-tractor text-warning me-2"></i>Harvest Season</h6>
+                            <p class="text-muted">
+                                {% set all_harvest = suggestions|map(attribute='harvest_period')|unique|list %}
+                                {% if all_harvest|length == 1 %}
+                                    {{ all_harvest[0] }}
+                                {% else %}
+                                    Varies by region
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-4">
+                            <h6><i class="fas fa-clock text-info me-2"></i>Growing Time</h6>
+                            <p class="text-muted">
+                                {% set all_periods = suggestions|map(attribute='growing_period')|select|unique|list %}
+                                {% if all_periods|length == 1 %}
+                                    {{ all_periods[0] }}
+                                {% else %}
+                                    {{ all_periods|length }} different periods
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <h6><i class="fas fa-lightbulb text-warning me-2"></i>Farming Tips:</h6>
+                    <ul class="mb-0">
+                        <li>Always check local weather conditions before planting</li>
+                        <li>Prepare soil according to your crop's specific requirements</li>
+                        <li>Consider crop rotation to maintain soil health</li>
+                        <li>Monitor your crops regularly during the growing period</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4 mb-4">
+                <a href="{{ url_for('crop_weather_form') }}" class="btn btn-outline-secondary me-2">
+                    <i class="fas fa-leaf me-1"></i>Choose Different Crop
+                </a>
+                {% if region %}
+                    <a href="{{ url_for('region_selection', crop_name=crop_name) }}" class="btn btn-outline-info me-2">
+                        <i class="fas fa-map me-1"></i>Change Region
+                    </a>
+                {% endif %}
+                <button onclick="window.print()" class="btn btn-success">
+                    <i class="fas fa-print me-1"></i>Print Calendar
+                </button>
+            </div>
+
+        {% else %}
+            <!-- No Data Found -->
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-calendar-times fa-4x text-muted"></i>
+                </div>
+                <h3>No calendar data found</h3>
+                <p class="text-muted">
+                    We don't have planting and harvesting information for 
+                    <strong>{{ crop_name }}</strong>
+                    {% if region %}in <strong>{{ region }}</strong>{% endif %}.
+                </p>
+                <div class="mt-3">
+                    <a href="{{ url_for('crop_weather_form') }}" class="btn btn-success me-2">
+                        <i class="fas fa-leaf me-1"></i>Try Different Crop
+                    </a>
+                    {% if region %}
+                        <a href="{{ url_for('harvest_calendar', crop=crop_name) }}" class="btn btn-info">
+                            <i class="fas fa-map me-1"></i>View All Regions
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Highlight current season cards
+    const seasonCards = document.querySelectorAll('.card.border-success');
+    seasonCards.forEach(card => {
+        card.style.boxShadow = '0 0 20px rgba(40, 167, 69, 0.3)';
+    });
+
+    // Smooth scroll for long pages
+    if (window.location.hash) {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+});
+
+// Print-specific styles
+const printStyles = `
+    @media print {
+        .btn, .breadcrumb, .alert-dismissible .btn-close {
+            display: none !important;
+        }
+        .card {
+            border: 1px solid #000 !important;
+            break-inside: avoid;
+        }
+        .card-header {
+            background-color: #f8f9fa !important;
+            color: #000 !important;
+        }
+    }
+`;
+
+const styleSheet = document.createElement('style');
+styleSheet.textContent = printStyles;
+document.head.appendChild(styleSheet);
+</script>
+
+<style>
+/* Compact Weather Card Styles */
+.weather-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+}
+
+.weather-card.compact {
+    min-height: 200px;
+}
+
+.weather-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    pointer-events: none;
+}
+
+.weather-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.weather-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.weather-icon {
+    font-size: 1.5rem;
+    color: #ffd700;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+}
+
+.weather-title h5 {
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.weather-location {
+    opacity: 0.9;
+    font-size: 0.8rem;
+}
+
+.weather-badge {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 3px 10px;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.weather-content {
+    padding: 15px 20px 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.main-temp {
+    display: flex;
+    align-items: flex-start;
+}
+
+.temp-value {
+    font-size: 2.5rem;
+    font-weight: 300;
+    line-height: 1;
+}
+
+.temp-unit {
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-top: 6px;
+    opacity: 0.8;
+}
+
+.main-desc {
+    flex: 1;
+}
+
+.weather-desc {
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    text-transform: capitalize;
+}
+
+.feels-like {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* Separate Weather Metrics Grid */
+.weather-metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    height: 100%;
+}
+
+.weather-metrics-grid .metric-item {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 90px;
+}
+
+.weather-metrics-grid .metric-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.weather-metrics-grid .metric-icon {
+    font-size: 1.4rem;
+    margin-bottom: 8px;
+    opacity: 0.8;
+}
+
+.weather-metrics-grid .metric-icon .fa-tint {
+    color: #2196f3;
+}
+
+.weather-metrics-grid .metric-icon .fa-cloud-rain {
+    color: #03a9f4;
+}
+
+.weather-metrics-grid .metric-icon .fa-wind {
+    color: #00bcd4;
+}
+
+.weather-metrics-grid .metric-icon .fa-gauge {
+    color: #ff9800;
+}
+
+.weather-metrics-grid .metric-value {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    color: #333;
+}
+
+.weather-metrics-grid .metric-label {
+    font-size: 0.75rem;
+    opacity: 0.7;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+}
+
+/* Responsive Design */
+@media (max-width: 991px) {
+    .weather-metrics-grid {
+        grid-template-columns: repeat(4, 1fr);
+        margin-top: 15px;
+    }
+    
+    .weather-metrics-grid .metric-item {
+        min-height: 80px;
+        padding: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .weather-header {
+        padding: 12px 15px 0;
+    }
+    
+    .weather-content {
+        padding: 12px 15px 15px;
+    }
+    
+    .weather-main {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        text-align: left;
+    }
+    
+    .temp-value {
+        font-size: 2rem;
+    }
+    
+    .temp-unit {
+        font-size: 1rem;
+    }
+    
+    .weather-metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .weather-metrics-grid .metric-item {
+        min-height: 70px;
+        padding: 10px;
+    }
+    
+    .weather-title {
+        gap: 8px;
+    }
+    
+    .weather-icon {
+        font-size: 1.3rem;
+    }
+    
+    .weather-title h5 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .weather-badge {
+        align-self: flex-end;
+    }
+}
+
+/* Legacy styles for other elements */
+.weather-metric {
+    padding: 1rem;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.weather-metric:hover {
+    transform: translateY(-2px);
+    background-color: rgba(0,123,255,0.05);
+}
+
+.weather-metric h4 {
+    font-weight: bold;
+    color: #333;
+}
+
+/* Print styles */
+@media print {
+    .weather-card {
+        background: #f8f9fa !important;
+        color: #000 !important;
+        border: 1px solid #dee2e6 !important;
+    }
+    
+    .weather-header, .weather-content {
+        color: #000 !important;
+    }
+    
+    .weather-metrics-grid .metric-item {
+        background: #e9ecef !important;
+        color: #000 !important;
+    }
+}
+</style>
+{% endblock %}

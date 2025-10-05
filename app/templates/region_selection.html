@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                {% if request.args.get('source') == 'crop_weather' %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('crop_weather_form') }}">
+                            <i class="fas fa-cloud-sun me-1"></i>Crop Weather
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ crop_name }} - Select Region</li>
+                {% else %}
+                    <li class="breadcrumb-item">
+                        <a href="{{ url_for('crop_weather_form') }}">
+                            <i class="fas fa-leaf me-1"></i>Crops
+                        </a>
+                    </li>
+                    <li class="breadcrumb-item active">{{ crop_name }}</li>
+                {% endif %}
+            </ol>
+        </nav>
+
+        {% if request.args.get('source') == 'crop_weather' %}
+            <h1 class="mb-4">
+                <i class="fas fa-map-marker-alt text-success me-2"></i>
+                <i class="fas fa-cloud-sun text-warning me-2"></i>
+                Select Region for Weather & Calendar
+            </h1>
+            <div class="alert alert-info mb-4">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Choose your region</strong> to view the complete harvest calendar with integrated weather information for <strong>{{ crop_name }}</strong>.
+            </div>
+        {% else %}
+            <h1 class="mb-4">
+                <i class="fas fa-map-marker-alt text-success me-2"></i>
+                Select Region for {{ crop_name }}
+            </h1>
+        {% endif %}
+        
+        <!-- Crop Info Card -->
+        <div class="card mb-4 bg-light">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="mb-1">
+                            <i class="fas fa-seedling text-success me-2"></i>{{ crop_name }}
+                        </h5>
+                        <p class="text-muted mb-0">
+                            Available in {{ regions|length }} region(s) across Pakistan
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        {% if request.args.get('source') == 'crop_weather' %}
+                            <a href="{{ url_for('harvest_calendar', crop=crop_name, source='crop_weather') }}" 
+                               class="btn btn-warning">
+                                <i class="fas fa-calendar me-1"></i>View All Regions
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('harvest_calendar', crop=crop_name) }}" 
+                               class="btn btn-warning">
+                                <i class="fas fa-calendar me-1"></i>View All Regions
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Region Selection -->
+        {% if regions %}
+            <div class="row">
+                {% for region_data in regions_with_weather %}
+                    <div class="col-md-6 col-lg-4 mb-3">
+                        <div class="card h-100 region-card">
+                            <div class="card-body">
+                                <div class="text-center mb-3">
+                                    <i class="fas fa-map-marker-alt fa-2x text-info"></i>
+                                </div>
+                                <h6 class="card-title text-center">{{ region_data.name }}</h6>
+                                
+                                <!-- Weather Location -->
+                                {% if region_data.weather_location %}
+                                    <div class="text-center mb-2">
+                                        <small class="text-muted">
+                                            <i class="fas fa-map-pin"></i>
+                                            Weather: {{ region_data.weather_location }}
+                                        </small>
+                                    </div>
+                                {% endif %}
+                                
+                                <!-- Weather Preview -->
+                                {% if region_data.weather and region_data.weather.success %}
+                                    <div class="text-center mb-3 p-2 bg-light rounded">
+                                        <small class="text-muted">Current Weather</small>
+                                        <div class="row mt-1">
+                                            <div class="col-4">
+                                                <i class="fas fa-thermometer-half text-danger"></i>
+                                                <br><small><strong>{{ region_data.weather.temperature_str }}</strong></small>
+                                            </div>
+                                            <div class="col-4">
+                                                <i class="fas fa-tint text-info"></i>
+                                                <br><small><strong>{{ region_data.weather.humidity_str }}</strong></small>
+                                            </div>
+                                            <div class="col-4">
+                                                <i class="fas fa-cloud-rain text-primary"></i>
+                                                <br><small><strong>{{ region_data.weather.rainfall_str }}</strong></small>
+                                            </div>
+                                        </div>
+                                        <div class="mt-1">
+                                            <small class="text-muted">{{ region_data.weather.description }}</small>
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    <div class="text-center mb-3 p-2 bg-light rounded">
+                                        <small class="text-muted">
+                                            <i class="fas fa-cloud-meatball"></i>
+                                            Weather data unavailable
+                                        </small>
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="text-center">
+                                    {% if request.args.get('source') == 'crop_weather' %}
+                                        <a href="{{ url_for('harvest_calendar', crop=crop_name, region=region_data.name, source='crop_weather') }}" 
+                                           class="btn btn-success btn-sm w-100">
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                            View Calendar & Weather
+                                        </a>
+                                    {% else %}
+                                        <a href="{{ url_for('harvest_calendar', crop=crop_name, region=region_data.name) }}" 
+                                           class="btn btn-success btn-sm w-100">
+                                            <i class="fas fa-calendar-check me-1"></i>
+                                            View Calendar
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="text-center mt-4">
+                {% if request.args.get('source') == 'crop_weather' %}
+                    <a href="{{ url_for('crop_weather_form') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Crop Weather
+                    </a>
+                    <a href="{{ url_for('harvest_calendar', crop=crop_name, source='crop_weather') }}" class="btn btn-primary">
+                        <i class="fas fa-calendar me-1"></i>View All Regions Calendar
+                    </a>
+                {% else %}
+                    <a href="{{ url_for('crop_weather_form') }}" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i>Back to Crops
+                    </a>
+                    <a href="{{ url_for('harvest_calendar', crop=crop_name) }}" class="btn btn-primary">
+                        <i class="fas fa-calendar me-1"></i>View All Regions Calendar
+                    </a>
+                {% endif %}
+            </div>
+        {% else %}
+            <!-- No Regions Found -->
+            <div class="text-center py-5">
+                <div class="mb-4">
+                    <i class="fas fa-map-marker-alt fa-4x text-muted"></i>
+                </div>
+                <h3>No regions found for {{ crop_name }}</h3>
+                <p class="text-muted">This crop doesn't have regional data available in our database.</p>
+                <a href="{{ url_for('crop_weather_form') }}" class="btn btn-success">
+                    <i class="fas fa-arrow-left me-2"></i>Choose Different Crop
+                </a>
+            </div>
+        {% endif %}
+
+        <!-- Regional Information -->
+        {% if regions %}
+           
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add hover effects to region cards
+    const regionCards = document.querySelectorAll('.region-card');
+    regionCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.classList.add('shadow-lg');
+            this.style.transform = 'translateY(-5px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.classList.remove('shadow-lg');
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+{% endblock %}
