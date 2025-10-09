@@ -10,7 +10,7 @@ pandas
 numpy
 
 # Deployment
-gunicorn
 setuptools
 wheel
+
 
