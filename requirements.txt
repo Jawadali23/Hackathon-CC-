@@ -8,9 +8,11 @@ blinker
 python-dotenv
 pandas
 numpy
+requests
 
 # Deployment
 setuptools
 wheel
+
 
 
